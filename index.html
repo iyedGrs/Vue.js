@@ -13,41 +13,17 @@
     />
   </head>
   <body>
-    <nav
-      :class="[`bg-${theme}`,`navbar-${theme}`,'navbar', 'navbar-expand-lg']"
-    >
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li v-for="(page,index) in pages" class="nav-item" :key="index">
-          <a
-            class="nav-link"
-            :class="{active :activePage==index}"
-            aria-current="page"
-            :href="page.link.url"
-            @click.prevent="activePage = index"
-            >{{page.link.text}}
-          </a>
-        </li>
-        <!-- <li
-          class="nav-link"
-          
-          :class="{'text-white':useDarkNavBar}"
-        >
-          Switch Theme
-        </li> -->
-      </ul>
-      <form class="d-flex">
-        <button class="btn btn-primary" @click.prevent="changeTheme()">
-          Toggle NavBar
-        </button>
-      </form>
-    </nav>
+    <navbar
+      :active-page="activePage"
+      :pages="pages"
+      :nav-link-click="(index)=>activePage=index"
+    ></navbar>
     <page-viewer :page="pages[activePage]"></page-viewer>
     <script>
       let app = Vue.createApp({
         data() {
           return {
             activePage: 0,
-            theme: "dark",
             pages: [
               {
                 link: {
@@ -76,6 +52,43 @@
             ],
           };
         },
+      });
+
+      app.component("page-viewer", {
+        props: ["page"],
+        template: `<div id="content" class="container">
+            <h1>{{ page.pageTitle}}</h1>
+            <p>{{page.content}}</p>
+            </div>  `,
+      });
+      app.component("navbar", {
+        props: ["pages", "activePage", "navLinkClick"],
+        template: `<nav
+      :class="[\`bg-\${theme}\`,\`navbar-\${theme}\`,'navbar', 'navbar-expand-lg']"
+    >
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li v-for="(page,index) in pages" class="nav-item" :key="index">
+          <a
+            class="nav-link"
+            :class="{active :activePage==index}"
+            aria-current="page"
+            :href="page.link.url"
+            @click.prevent="navLinkClick(index)"
+            >{{page.link.text}}
+          </a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <button class="btn btn-primary" @click.prevent="changeTheme()">
+          Toggle NavBar
+        </button>
+      </form>
+    </nav>`,
+        data() {
+          return {
+            theme: "light",
+          };
+        },
         methods: {
           changeTheme() {
             let theme = "light";
@@ -86,15 +99,6 @@
           },
         },
       });
-
-      app.component("page-viewer", {
-        props: ["page"],
-        template: `<div id="content" class="container">
-            <h1>{{ page.pageTitle}}</h1>
-            <p>{{page.content}}</p>
-            </div>  `,
-      });
-
       app.mount("body");
     </script>
   </body>
