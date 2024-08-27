@@ -5,14 +5,12 @@
     >
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li v-for="(page, index) in pages" class="nav-item" :key="index">
-          <a
-            class="nav-link"
-            :class="{ active: activePage == index }"
-            aria-current="page"
-            :href="page.link.url"
+          <NavBarLink
+            :page="page"
+            :is-active="index == activePage"
             @click.prevent="navLinkClick(index)"
-            >{{ page.link.text }}
-          </a>
+          >
+          </NavBarLink>
         </li>
       </ul>
       <form class="d-flex">
@@ -24,7 +22,11 @@
   </div>
 </template>
 <script>
+import NavBarLink from "./NavBarLink.vue";
 export default {
+  components: {
+    NavBarLink,
+  },
   props: ["pages", "activePage", "navLinkClick"],
 
   data() {
