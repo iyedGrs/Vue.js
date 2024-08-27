@@ -13,12 +13,26 @@
     />
   </head>
   <body>
+    <nav>
+      <ul class="nav">
+        <li v-for="link in links" class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">{{link}} </a>
+        </li>
+      </ul>
+    </nav>
     <div id="content" class="container">
       <h1>{{pageTitle}}</h1>
       <p>{{content}}</p>
     </div>
 
     <script>
+      Vue.createApp({
+        data() {
+          return {
+            links: ["Home", "About", "Contact"],
+          };
+        },
+      }).mount("nav");
       Vue.createApp({
         data() {
           return {
