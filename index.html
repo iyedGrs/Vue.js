@@ -13,10 +13,7 @@
     />
   </head>
   <body>
-    <nav
-      class="navbar navbar-expand-lg"
-      :class="{'navbar-dark bg-dark': useDarkNavBar, 'navbar-light bg-light': !useDarkNavBar}"
-    >
+    <nav class="navbar navbar-expand-lg" :class="cssClasses">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li v-for="(page,index) in pages" class="nav-item" :key="index">
           <a
@@ -52,6 +49,16 @@
 
     <script>
       Vue.createApp({
+        computed: {
+          cssClasses() {
+            return {
+              "navbar-dark": this.useDarkNavBar,
+              "bg-dark": this.useDarkNavBar,
+              "navbar-light": !this.useDarkNavBar,
+              "bg-light": !this.useDarkNavBar,
+            };
+          },
+        },
         data() {
           return {
             useDarkNavBar: false,
