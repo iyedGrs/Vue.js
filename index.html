@@ -13,7 +13,9 @@
     />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg" :class="cssClasses">
+    <nav
+      :class="[`bg-${theme}`,`navbar-${theme}`,'navbar', 'navbar-expand-lg']"
+    >
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li v-for="(page,index) in pages" class="nav-item" :key="index">
           <a
@@ -34,10 +36,7 @@
         </li> -->
       </ul>
       <form class="d-flex">
-        <button
-          class="btn btn-primary"
-          @click.prevent="useDarkNavBar=!useDarkNavBar"
-        >
+        <button class="btn btn-primary" @click.prevent="changeTheme()">
           Toggle NavBar
         </button>
       </form>
@@ -49,20 +48,10 @@
 
     <script>
       Vue.createApp({
-        computed: {
-          cssClasses() {
-            return {
-              "navbar-dark": this.useDarkNavBar,
-              "bg-dark": this.useDarkNavBar,
-              "navbar-light": !this.useDarkNavBar,
-              "bg-light": !this.useDarkNavBar,
-            };
-          },
-        },
         data() {
           return {
-            useDarkNavBar: false,
             activePage: 0,
+            theme: "dark",
             pages: [
               {
                 link: {
@@ -90,6 +79,15 @@
               },
             ],
           };
+        },
+        methods: {
+          changeTheme() {
+            let theme = "light";
+            if (this.theme == "light") {
+              theme = "dark";
+            }
+            this.theme = theme;
+          },
         },
       }).mount("body");
     </script>
